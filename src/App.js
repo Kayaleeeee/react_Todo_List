@@ -1,51 +1,94 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { Component } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoTemplate from "./TodoTemplate";
 import TodoList from "./TodoList";
 
-const App = () => {
-	const [todos, setTodos] = useState([
-		{ id: 1, text: "react 복습하기", checked: true },
-		{ id: 2, text: "정처기 공부하기", checked: true },
-		{ id: 3, text: "react app 만들기", checked: false },
-	]);
+class App extends Component {
+	state = {
+		nextId: 3,
+		input: "", ///input값 초기 설정
+		todos: [
+			{ id: 0, text: "0-test123", checked: false },
+			{ id: 1, text: "1-t123", checked: false },
+			{ id: 2, text: "2-tes3", checked: true },
+		],
+	};
 
-	const nextId = useRef(4);
-	const onInsert = useCallback(
-		(text) => {
-			const todo = {
-				id: nextId.current,
-				text,
-				checked: false,
-			};
-			setTodos(todos.concat(todo));
-			nextId.current += 1;
-		},
-		[todos]
-	);
-	const onRemove = useCallback(
-		(id) => {
-			setTodos(todos.filter((todo) => todo.id !== id));
-		},
-		[todos]
-	);
+	onChange = (e) => {
+		const { value } = e.target;
+		this.setState({ input: value });
 
-	const onToggle = useCallback(
-		(id) => {
-			setTodos(
-				todos.map((todo) =>
-					todo.id === id ? { ...todo, checked: !todo.checked } : todo
-				)
-			);
-		},
-		[todos]
-	);
-	return (
-		<TodoTemplate>
-			<TodoInsert onInsert={onInsert} />
-			<TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
-		</TodoTemplate>
-	);
-};
+		//중괄호에서 받아오기
+	};
+
+	onInsert = () => {
+		const { todos, input, nextId } = this.state;
+		//클래스 내 이벤트 사용시, 설정해준 state값 받아오기
+		//{}선언과 일반 선언의 차이?
+
+		const newTodo = {
+			id: nextId,
+			text: input,
+			checked: false,
+		};
+
+		this.setState({
+			todos: [...todos, newTodo],
+			//state바꿔주기 [...원래배열, 새로 생성한 배열]
+			input: "",
+			nextId: nextId + 1,
+		});
+	};
+
+	handletoggle = (id) => {
+		const { todos } = this.state;
+		const index = todos.findIndex((todo) => todo.id === id);
+
+		///...용법, 체크드
+		const toggled = {
+			...todos[index],
+			checked: !todos[index].checked,
+		};
+
+		//id가 같은 index 전/후 데이터 slice로 복사, 그 사이에 toggled넣기
+		this.setState({
+			...this.state,
+			todos: [
+				...todos.slice(0, index),
+				toggled,
+				...todos.slice(index + 1, todos.length),
+			],
+		});
+	};
+
+	handleRemove = (id) => {
+		const { todos } = this.state;
+		// const index = todos.findIndex((todo) => todo.id === id);
+		const filterTodo = todos.filter((val) => val.id !== id);
+		this.setState({ ...this.state, todos: filterTodo });
+	};
+
+	render() {
+		const { todos, input } = this.state;
+
+		//위에서 설정해준 함수, 변수 연결해주기
+
+		return (
+			<TodoTemplate>
+				<TodoInsert
+					input={input}
+					onInsert={this.onInsert}
+					onChange={this.onChange}
+					// onSubmit={this.onSubmit}
+				/>
+				<TodoList
+					todos={todos}
+					onToggle={this.handletoggle}
+					onRemove={this.handleRemove}
+				/>
+			</TodoTemplate>
+		);
+	}
+}
 
 export default App;

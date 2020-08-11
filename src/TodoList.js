@@ -1,20 +1,30 @@
-import React from "react";
+import React, { Component } from "react";
 import TodoListItem from "./TodoListItem";
 import "./TodoList.scss";
+import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 
-const TodoList = ({ todos, onRemove, onToggle }) => {
-  return (
-    <div className={"TodoList"}>
-      {todos.map((todo) => (
-        <TodoListItem
-          todo={todo}
-          key={todo.id}
-          onRemove={onRemove}
-          onToggle={onToggle}
-        />
-      ))}
-    </div>
-  );
-};
+class TodoList extends Component {
+	constructor(props) {
+		super(props);
+		// this.props = todos;
+	}
+
+	render() {
+		const { todos, onToggle, onRemove } = this.props;
+
+		return (
+			<div className="TodoList">
+				{todos.map((todo) => (
+					<TodoListItem
+						key={todo.id}
+						todo={todo}
+						onToggle={onToggle}
+						onRemove={onRemove}
+					/>
+				))}
+			</div>
+		);
+	}
+}
 
 export default TodoList;
