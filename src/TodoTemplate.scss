@@ -1,4 +1,5 @@
 .TodoTemplate {
+<<<<<<< HEAD
 	width: 512px;
 	margin-left: auto;
 	margin-right: auto;
@@ -26,4 +27,25 @@
 	.content {
 		background: white;
 	}
+=======
+  width: 512px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 6rem;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .app-title {
+    background: #22b0cf;
+    color: white;
+    height: 4rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .content {
+    background: white;
+  }
+>>>>>>> refs/remotes/origin/master
 }
