@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoTemplate from "./TodoTemplate";
 import TodoList from "./TodoList";
+import Calendar from "react-calendar";
 
 const App = () => {
 	const [todos, setTodos] = useState([
@@ -41,10 +42,12 @@ const App = () => {
 		[todos]
 	);
 	return (
-		<TodoTemplate>
-			<TodoInsert onInsert={onInsert} />
-			<TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
-		</TodoTemplate>
+		<div>
+			<TodoTemplate>
+				<TodoInsert onInsert={onInsert} />
+				<TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
+			</TodoTemplate>
+		</div>
 	);
 };
 

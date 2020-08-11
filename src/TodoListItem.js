@@ -9,6 +9,7 @@ import cn from "classnames";
 
 const TodoListItem = ({ onToggle, todo, onRemove }) => {
 	const { id, text, checked } = todo;
+	localStorage.setItem("name", text);
 	return (
 		<div className={"TodoListItem"}>
 			<div className={cn("checkbox", { checked })} onClick={() => onToggle(id)}>
